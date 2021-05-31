@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <meta charset="utf-8">
+   <link rel="stylesheet" href="stylesheet.css">
+    <title>Tic tac toe</title>
+    <div class="header">
+      <h1>Tic Tac Toe</h1>
+      <p id="message">✘ turn</p>
+    </div>
+ </head>
+ <body style="text-align: center">
+   <div id="reset"></div>
+   <table id="table">
+    <tr>
+        <td id="square_1" onclick="return game(this.id)"></td>
+        <td id="square_2" onclick="return game(this.id)"></td>
+        <td id="square_3" onclick="return game(this.id)"></td>
+    </tr>
+    <tr>
+        <td id="square_4" onclick="return game(this.id)"></td>
+        <td id="square_5" onclick="return game(this.id)"></td>
+        <td id="square_6" onclick="return game(this.id)"></td>
+    </tr>
+    <tr>
+        <td id="square_7" onclick="return game(this.id)"></td>
+        <td id="square_8" onclick="return game(this.id)"></td>
+        <td id="square_9" onclick="return game(this.id)"></td>
+    </tr>
+</table>
+   <script src="script.js"></script>
+ </body>
+</html>
