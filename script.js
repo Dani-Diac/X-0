@@ -1,77 +1,98 @@
-  var player = "✘";
-  var moves = 9;
-  var winner = false;
-
-function game(id) {
-  if (winner == false) {
-    --moves;
-    document.getElementById(id).innerHTML = player;
-    var disableBox = document.getElementById(id);
-    disableBox.onclick = "";
-    checkLines();
-  }
-
+var table = [] , moves = 9, player = "✘";
+for(var i = 1; i <= 3; i++) {
+    table[i] = [];
+    for(var j = 1; j <= 3; j++) {
+        table[i][j] = i * 10 +  j;
+    }
 }
 
-function checkLines() {
-  for (var i = 1; i <= 7; i+= 3) {
-    if (document.getElementById(i).innerHTML == "✘" && document.getElementById(i + 1).innerHTML == "✘" && document.getElementById(i + 2).innerHTML == "✘") {
-      winner = true;
-      Message();
-      return;
-    }
-    if (document.getElementById(i).innerHTML == "0" && document.getElementById(i + 1).innerHTML == "0" && document.getElementById(i + 2).innerHTML == "0") {
-      winner = true;
-      Message();
-      return;
-    }
-  }
-  checkRows();
-}
-
-function checkRows() {
+function getCellPosition(id) {
+  document.getElementById(id).innerHTML = player;
   for (var i = 1; i <= 3; ++i) {
-    if (document.getElementById(i).innerHTML == "✘" && document.getElementById(i + 3).innerHTML == "✘" && document.getElementById(i + 6).innerHTML == "✘") {
-      winner = true;
-      Message();
-      return;
-    }
-    if (document.getElementById(i).innerHTML == "0" && document.getElementById(i + 3).innerHTML == "0" && document.getElementById(i + 6).innerHTML == "0") {
-      winner = true;
-      Message();
-      return;
+    for (var j = 1; j <= 3; ++j) {
+      if (table[i][j] == id) {
+        table[i][j] = player;
+      }
     }
   }
+  let disableBox = document.getElementById(id);
+  disableBox.onclick = "";
+  --moves;
   checkDiagonals();
 }
 
 function checkDiagonals() {
-  if (document.getElementById(1).innerHTML == "✘" && document.getElementById(5).innerHTML == "✘" && document.getElementById(9).innerHTML == "✘" ||
-      document.getElementById(3).innerHTML == "✘" && document.getElementById(5).innerHTML == "✘" && document.getElementById(7).innerHTML == "✘") {
-    winner = true;
-    Message();
+  //check main diagonal
+  let winner = true;
+  for (var i = 1; i <= 3; ++i) {
+    if (table[i][i] != player) {
+      winner = false;
+    }
+  }
+  //display who wins
+  if (winner) {
+    showStatus(winner);
     return;
   }
-  if (document.getElementById(1).innerHTML == "0" && document.getElementById(5).innerHTML == "0" && document.getElementById(9).innerHTML == "0" ||
-      document.getElementById(3).innerHTML == "0" && document.getElementById(5).innerHTML == "0" && document.getElementById(7).innerHTML == "0") {
-    winner = true;
-    Message();
+    //check secondary diagonal
+  winner = true;
+  for (var i = 1; i <= 3; ++i) {
+    for (var j = 3; j >= 1; --j) {
+      if (table[i][j] != player) {
+        winner = false;
+      }
+      ++i;
+    }
+  }
+  if (winner) {
+    showStatus(winner);
     return;
   }
-  setPlayer();
-}
-function setPlayer() {
-  if (player == "✘") {
-    player = "0";
-  } else if(player == "0"){
-    player = "✘";
-  }
-  Message();
+  checkRowsColumns();
 }
 
-function Message() {
-  if (winner == true) {
+
+function checkRowsColumns() {
+  let winner;
+  for (var i = 1; i <= 3; ++i) {
+    //check rows
+    winner = true;
+    for (var j = 1; j <= 3; ++j) {
+      if (table[i][j] != player) {
+        winner = false;
+      }
+    }
+    //Displat who wins
+    if (winner) {
+      showStatus(winner);
+      return;
+    }
+    //check Columns
+    winner = true;
+    for (var j = 1; j <= 3; ++j) {
+      if (table[j][i] != player) {
+        winner = false;
+      }
+    }
+    if (winner) {
+      showStatus(winner);
+      return;
+    }
+  }
+  showStatus(winner);
+}
+
+function changePlayer() {
+  if (player == "✘") {
+    return player = "0";
+  }
+  return player = "✘";
+}
+
+function showStatus(winner) {
+  if (winner) {
     document.getElementById("message").innerHTML = player + " wins";
+    disableCells();
     restart();
     return;
   }
@@ -79,7 +100,17 @@ function Message() {
     document.getElementById("message").innerHTML = "Draw";
     restart();
   } else {
-      document.getElementById("message").innerHTML = player + " turn";
+    changePlayer()
+    document.getElementById("message").innerHTML = player + " turns";
+  }
+}
+
+function disableCells() {
+  for (var i = 1; i <= 3; ++i) {
+    for (var j = 1; j <= 3; ++j) {
+      let disableCell = document.getElementById(i * 10 + j);
+      disableCell.onclick = "";
+    }
   }
 }
 
